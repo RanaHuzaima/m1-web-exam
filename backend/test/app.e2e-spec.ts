@@ -82,7 +82,7 @@ describe("Bike shop API", () => {
       (all.body as { customers: CustomerResponseDto[] }).customers.map(
         (item) => item.lastName,
       ),
-    ).toEqual(["Bernard", "Durand", "Martin", "Moreau"]);
+    ).toEqual(["Moreau", "Durand", "Bernard", "Martin"]);
     await request(app.getHttpServer())
       .patch(`/customers/${customer.id}`)
       .send({ city: "Paris", phone: "0600000000" })

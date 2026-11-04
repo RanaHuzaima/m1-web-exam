@@ -44,7 +44,8 @@ export const useCustomersProvider = () => {
     axios
       .post<CustomerModel>("http://localhost:3000/customers", input)
       .then(() => {
-        load(page);
+        // Go back to page 1 so the newly created customer is visible
+        load(1);
       });
 
   return {

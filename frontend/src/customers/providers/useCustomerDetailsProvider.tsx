@@ -41,6 +41,13 @@ export const useCustomerDetailsProvider = (customerId: string) => {
       )
       .then((result) => setCustomer(result.data));
 
+  const createPurchase = (input: { bikeId: string; quantity: number }) =>
+    axios
+      .post(`http://localhost:3000/customers/${customerId}/bikes`, input)
+      .then(() => {
+        loadPurchases();
+      });
+
   return {
     customer,
     load,
@@ -49,5 +56,6 @@ export const useCustomerDetailsProvider = (customerId: string) => {
     purchases,
     loadPurchases,
     isPurchasesLoading,
+    createPurchase,
   };
 };

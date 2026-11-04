@@ -21,12 +21,16 @@ export class BikesRepository {
     page: number,
     limit: number,
   ): Promise<{ totalCount: number; bikes: BikeModel[] }> {
-    const repository = this.dataSource.getRepository(BikeEntity);
-    const [entities, totalCount] = await repository.findAndCount({
-      order: { brand: "ASC", model: "ASC", id: "ASC" },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    // Newest first (SQLite rowid), then brand/model for a stable order
+    const [entities, totalCount] = await this.dataSource
+      .getRepository(BikeEntity)
+      .createQueryBuilder("bike")
+      .orderBy("bike.rowid", "DESC")
+      .addOrderBy("bike.brand", "ASC")
+      .addOrderBy("bike.model", "ASC")
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
     return {
       totalCount,
       bikes: entities.map((entity) => this.toBikeModel(entity)),

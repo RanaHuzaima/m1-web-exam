@@ -1,4 +1,4 @@
-import { Pagination, Skeleton, Space } from "antd";
+import { Pagination, Skeleton, Space, Typography } from "antd";
 import { useEffect } from "react";
 import { useBikesProvider } from "../providers/useBikesProvider";
 import { AddBikeButton } from "./AddBikeButton";
@@ -21,22 +21,31 @@ export const BikesList = () => {
   }, []);
 
   return (
-    <Space orientation="vertical" style={{ padding: ".25rem .5rem" }}>
-      <AddBikeButton createBike={createBike} />
+    <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography.Title level={2} style={{ margin: 0 }}>Bikes</Typography.Title>
+        <AddBikeButton createBike={createBike} />
+      </div>
+
       {isLoading ? (
-        <Skeleton />
+        <Skeleton active />
       ) : (
-        bikes.map((bike) => (
-          <BikeListItem key={bike.id} bike={bike} deleteBike={deleteBike} />
-        ))
+        <Space direction="vertical" size="small" style={{ display: "flex" }}>
+          {bikes.map((bike) => (
+            <BikeListItem key={bike.id} bike={bike} deleteBike={deleteBike} />
+          ))}
+        </Space>
       )}
-      <Pagination
-        current={page}
-        pageSize={limit}
-        total={totalCount}
-        onChange={(nextPage) => load(nextPage)}
-        showSizeChanger={false}
-      />
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+        <Pagination
+          current={page}
+          pageSize={limit}
+          total={totalCount}
+          onChange={(nextPage) => load(nextPage)}
+          showSizeChanger={false}
+        />
+      </div>
     </Space>
   );
 };

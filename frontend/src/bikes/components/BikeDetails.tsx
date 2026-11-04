@@ -18,21 +18,13 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
   }, [bikeId]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: 16,
-        padding: ".25rem .5rem",
-      }}
-    >
+    <Space direction="vertical" size="large" style={{ display: "flex" }}>
       <ButtonLink to="/bikes" icon={<ArrowLeftOutlined />}>
         Back to bikes
       </ButtonLink>
 
       <Space align="center">
-        <AppstoreOutlined style={{ fontSize: "1.5rem" }} />
+        <AppstoreOutlined style={{ fontSize: "1.5rem", color: "#1890ff" }} />
         {isLoading ? (
           <Skeleton.Input active size="large" />
         ) : (
@@ -47,6 +39,6 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
         isLoading={isLoading}
         updateBike={updateBike}
       />
-    </div>
+    </Space>
   );
 };

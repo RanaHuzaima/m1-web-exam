@@ -22,6 +22,7 @@ export const CustomerDetails = ({ customerId }: CustomerDetailsProps) => {
     purchases,
     isPurchasesLoading,
     loadPurchases,
+    createPurchase,
   } = useCustomerDetailsProvider(customerId);
 
   useEffect(() => {
@@ -74,6 +75,7 @@ export const CustomerDetails = ({ customerId }: CustomerDetailsProps) => {
           <CustomerPurchasesList
             purchases={purchases}
             isLoading={isPurchasesLoading}
+            createPurchase={createPurchase}
           />
         </Col>
       </Row>

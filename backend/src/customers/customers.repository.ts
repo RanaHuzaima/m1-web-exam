@@ -29,12 +29,16 @@ export class CustomersRepository {
     page: number,
     limit: number,
   ): Promise<{ totalCount: number; customers: CustomerModel[] }> {
-    const repository = this.dataSource.getRepository(CustomerEntity);
-    const [entities, totalCount] = await repository.findAndCount({
-      order: { lastName: "ASC", firstName: "ASC", id: "ASC" },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    // Newest first (SQLite rowid), then name for a stable order
+    const [entities, totalCount] = await this.dataSource
+      .getRepository(CustomerEntity)
+      .createQueryBuilder("customer")
+      .orderBy("customer.rowid", "DESC")
+      .addOrderBy("customer.lastName", "ASC")
+      .addOrderBy("customer.firstName", "ASC")
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
     return {
       totalCount,
       customers: entities.map((entity) => this.toCustomerModel(entity)),

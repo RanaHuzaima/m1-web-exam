@@ -1,5 +1,5 @@
-import { EyeOutlined, ThunderboltOutlined } from "@ant-design/icons";
-import { Col, Row, Space, Tag } from "antd";
+import { EyeOutlined, ThunderboltOutlined, AppstoreOutlined } from "@ant-design/icons";
+import { Col, Space, Tag, Typography } from "antd";
 import { ButtonLink } from "../../shared/components/ButtonLink";
 import { ListItem } from "../../shared/components/ListItem";
 import type { BikeModel } from "../models/BikeModel";
@@ -19,27 +19,25 @@ const formatPrice = (priceCents: number) =>
 export const BikeListItem = ({ bike, deleteBike }: BikeListItemProps) => {
   return (
     <ListItem>
-      <Col span={8}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          {bike.electric && <ThunderboltOutlined />}
-          {`${bike.brand} ${bike.model}`}
+      <Col xs={24} sm={8}>
+        <Space>
+          {bike.electric ? <ThunderboltOutlined style={{ color: "#faad14" }} /> : <AppstoreOutlined style={{ color: "#1890ff" }} />}
+          <Typography.Text strong>{`${bike.brand} ${bike.model}`}</Typography.Text>
         </Space>
       </Col>
-      <Col span={6}>
-        <Tag>{bike.category}</Tag>
+      <Col xs={24} sm={6}>
+        <Tag color="blue">{bike.category}</Tag>
       </Col>
-      <Col span={6}>{formatPrice(bike.priceCents)}</Col>
-      <Col span={4}>
-        <Row gutter={[4, 4]}>
-          <Col>
-            <ButtonLink to="/bikes/$bikeId" params={{ bikeId: bike.id }}>
-              <EyeOutlined />
-            </ButtonLink>
-          </Col>
-          <Col>
-            <DeleteBikeButton bike={bike} deleteBike={deleteBike} />
-          </Col>
-        </Row>
+      <Col xs={24} sm={6}>
+        <Typography.Text type="secondary">{formatPrice(bike.priceCents)}</Typography.Text>
+      </Col>
+      <Col xs={24} sm={4} style={{ textAlign: "right" }}>
+        <Space>
+          <ButtonLink to="/bikes/$bikeId" params={{ bikeId: bike.id }} icon={<EyeOutlined />}>
+            View
+          </ButtonLink>
+          <DeleteBikeButton bike={bike} deleteBike={deleteBike} />
+        </Space>
       </Col>
     </ListItem>
   );
