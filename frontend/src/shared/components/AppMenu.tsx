@@ -40,7 +40,12 @@ export function AppMenu() {
       selectedKeys={[getSelectedKey(pathname)]}
       mode="horizontal"
       items={items}
-      style={{ borderBottom: "none", lineHeight: "64px", flex: 1 }}
+      style={{
+        borderBottom: "none",
+        lineHeight: "64px",
+        flex: 1,
+        background: "transparent",
+      }}
     />
   );
 }

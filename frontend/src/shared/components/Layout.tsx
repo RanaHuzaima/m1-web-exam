@@ -7,25 +7,40 @@ const { Title } = Typography;
 
 export const Layout = () => {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {
+      colorBgContainer,
+      colorBgLayout,
+      colorBorderSecondary,
+      borderRadiusLG,
+      colorPrimary,
+    },
   } = theme.useToken();
 
   return (
-    <AntLayout style={{ minHeight: "100vh" }}>
+    <AntLayout style={{ minHeight: "100vh", background: colorBgLayout }}>
       <Header
         style={{
           display: "flex",
           alignItems: "center",
           background: colorBgContainer,
-          borderBottom: "1px solid #f0f0f0",
+          borderBottom: `1px solid ${colorBorderSecondary}`,
           padding: "0 24px",
           position: "sticky",
           top: 0,
           zIndex: 10,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "24px", width: "100%", maxWidth: 1200, margin: "0 auto" }}>
-          <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "24px",
+            width: "100%",
+            maxWidth: 1200,
+            margin: "0 auto",
+          }}
+        >
+          <Title level={3} style={{ margin: 0, color: colorPrimary }}>
             Bikez.ai
           </Title>
           <div style={{ flex: 1 }}>
@@ -33,7 +48,14 @@ export const Layout = () => {
           </div>
         </div>
       </Header>
-      <Content style={{ padding: "24px", maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+      <Content
+        style={{
+          padding: "24px",
+          maxWidth: 1200,
+          margin: "0 auto",
+          width: "100%",
+        }}
+      >
         <div
           style={{
             background: colorBgContainer,
@@ -45,7 +67,7 @@ export const Layout = () => {
           <Outlet />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
+      <Footer style={{ textAlign: "center", background: colorBgLayout }}>
         Bikez.ai ©{new Date().getFullYear()} Created for M1 Web Exam
       </Footer>
     </AntLayout>

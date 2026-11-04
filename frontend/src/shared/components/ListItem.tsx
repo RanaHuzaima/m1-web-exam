@@ -1,4 +1,4 @@
-import { Row } from "antd";
+import { Row, theme } from "antd";
 import type { ReactNode } from "react";
 
 interface ListItemProps {
@@ -6,18 +6,26 @@ interface ListItemProps {
 }
 
 export const ListItem = ({ children }: ListItemProps) => {
+  const {
+    token: { colorBorderSecondary, colorFillTertiary, colorFillSecondary },
+  } = theme.useToken();
+
   return (
     <Row
       align="middle"
       style={{
-        border: "1px solid #f0f0f0",
+        border: `1px solid ${colorBorderSecondary}`,
         borderRadius: "8px",
         padding: "12px 16px",
-        background: "#fafafa",
-        transition: "all 0.3s",
+        background: colorFillTertiary,
+        transition: "background 0.2s",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f5ff")}
-      onMouseLeave={(e) => (e.currentTarget.style.background = "#fafafa")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = colorFillSecondary;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = colorFillTertiary;
+      }}
     >
       {children}
     </Row>
