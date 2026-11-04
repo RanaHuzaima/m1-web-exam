@@ -37,7 +37,8 @@ export const useBikesProvider = () => {
 
   const createBike = (input: CreateBikeModel) =>
     axios.post<BikeModel>("http://localhost:3000/bikes", input).then(() => {
-      load(page);
+      // Go back to page 1 so the newly created bike is visible
+      load(1);
     });
 
   return {

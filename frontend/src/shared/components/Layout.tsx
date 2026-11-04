@@ -1,43 +1,53 @@
 import { Outlet } from "@tanstack/react-router";
-import { Col, Row } from "antd";
-import Title from "antd/es/typography/Title";
+import { Layout as AntLayout, Typography, theme } from "antd";
 import { AppMenu } from "./AppMenu";
 
+const { Header, Content, Footer } = AntLayout;
+const { Title } = Typography;
+
 export const Layout = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   return (
-    <div
-      style={{
-        fontFamily: "arial",
-        width: "100%",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-      }}
-    >
-      <header
+    <AntLayout style={{ minHeight: "100vh" }}>
+      <Header
         style={{
+          display: "flex",
+          alignItems: "center",
+          background: colorBgContainer,
+          borderBottom: "1px solid #f0f0f0",
+          padding: "0 24px",
           position: "sticky",
           top: 0,
           zIndex: 10,
-          background: "#fff",
-          borderWidth: "0 0 1px 0",
-          borderStyle: "none none solid none",
-          borderColor: "#ddd",
-          backgroundColor: "#E4B158",
-          paddingTop: ".5rem",
         }}
       >
-        <Row>
-          <Col>
-            <Title style={{ margin: 0 }}>Bikez.ai</Title>
-          </Col>
-          <Col>
+        <div style={{ display: "flex", alignItems: "center", gap: "24px", width: "100%", maxWidth: 1200, margin: "0 auto" }}>
+          <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
+            Bikez.ai
+          </Title>
+          <div style={{ flex: 1 }}>
             <AppMenu />
-          </Col>
-        </Row>
-      </header>
-      <Outlet />
-    </div>
+          </div>
+        </div>
+      </Header>
+      <Content style={{ padding: "24px", maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+        <div
+          style={{
+            background: colorBgContainer,
+            minHeight: 280,
+            padding: 24,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          <Outlet />
+        </div>
+      </Content>
+      <Footer style={{ textAlign: "center" }}>
+        Bikez.ai ©{new Date().getFullYear()} Created for M1 Web Exam
+      </Footer>
+    </AntLayout>
   );
 };

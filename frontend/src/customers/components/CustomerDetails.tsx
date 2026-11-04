@@ -30,21 +30,13 @@ export const CustomerDetails = ({ customerId }: CustomerDetailsProps) => {
   }, [customerId]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: 16,
-        padding: ".25rem .5rem",
-      }}
-    >
+    <Space direction="vertical" size="large" style={{ display: "flex" }}>
       <ButtonLink to="/customers" icon={<ArrowLeftOutlined />}>
         Back to customers
       </ButtonLink>
 
       <Space align="center">
-        <ContactsOutlined style={{ fontSize: "1.5rem" }} />
+        <ContactsOutlined style={{ fontSize: "1.5rem", color: "#1890ff" }} />
         {isLoading ? (
           <Skeleton.Input active size="large" />
         ) : (
@@ -85,6 +77,6 @@ export const CustomerDetails = ({ customerId }: CustomerDetailsProps) => {
           />
         </Col>
       </Row>
-    </div>
+    </Space>
   );
 };

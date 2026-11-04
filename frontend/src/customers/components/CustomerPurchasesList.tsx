@@ -13,18 +13,22 @@ export const CustomerPurchasesList = ({
   isLoading,
 }: CustomerPurchasesListProps) => {
   return (
-    <Space orientation="vertical" style={{ width: "100%" }}>
+    <Space direction="vertical" size="middle" style={{ width: "100%", display: "flex" }}>
       <Title level={3} style={{ margin: 0 }}>
         Purchases
       </Title>
       {isLoading ? (
-        [0, 1, 2].map((index) => <CustomerPurchaseListItem key={index} />)
+        <Space direction="vertical" size="small" style={{ width: "100%", display: "flex" }}>
+          {[0, 1, 2].map((index) => <CustomerPurchaseListItem key={index} />)}
+        </Space>
       ) : purchases.length === 0 ? (
         <Empty description="No purchases yet" />
       ) : (
-        purchases.map((purchase) => (
-          <CustomerPurchaseListItem key={purchase.id} purchase={purchase} />
-        ))
+        <Space direction="vertical" size="small" style={{ width: "100%", display: "flex" }}>
+          {purchases.map((purchase) => (
+            <CustomerPurchaseListItem key={purchase.id} purchase={purchase} />
+          ))}
+        </Space>
       )}
     </Space>
   );

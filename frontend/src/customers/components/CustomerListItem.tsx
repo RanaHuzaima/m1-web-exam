@@ -4,7 +4,7 @@ import {
   MailOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { Col, Row, Space } from "antd";
+import { Col, Space, Typography } from "antd";
 import { ButtonLink } from "../../shared/components/ButtonLink";
 import { ListItem } from "../../shared/components/ListItem";
 import type { CustomerModel } from "../models/CustomerModel";
@@ -21,41 +21,38 @@ export const CustomerListItem = ({
 }: CustomerListItemProps) => {
   return (
     <ListItem>
-      <Col span={8}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <ContactsOutlined />
-          {`${customer.lastName} ${customer.firstName}`}
+      <Col xs={24} sm={8}>
+        <Space>
+          <ContactsOutlined style={{ color: "#1890ff" }} />
+          <Typography.Text strong>{`${customer.lastName} ${customer.firstName}`}</Typography.Text>
         </Space>
       </Col>
-      <Col span={10}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <MailOutlined />
-          {customer.email}
+      <Col xs={24} sm={8}>
+        <Space>
+          <MailOutlined style={{ color: "#8c8c8c" }} />
+          <Typography.Text type="secondary">{customer.email}</Typography.Text>
         </Space>
       </Col>
-      <Col span={4}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <PhoneOutlined />
-          {customer.phone}
+      <Col xs={24} sm={4}>
+        <Space>
+          <PhoneOutlined style={{ color: "#8c8c8c" }} />
+          <Typography.Text type="secondary">{customer.phone || "—"}</Typography.Text>
         </Space>
       </Col>
-      <Col span={2}>
-        <Row gutter={[4, 4]}>
-          <Col>
-            <ButtonLink
-              to={`/customers/$customerId`}
-              params={{ customerId: customer.id }}
-            >
-              <EyeOutlined />
-            </ButtonLink>
-          </Col>
-          <Col>
-            <DeleteCustomerButton
-              customer={customer}
-              deleteCustomer={deleteCustomer}
-            />
-          </Col>
-        </Row>
+      <Col xs={24} sm={4} style={{ textAlign: "right" }}>
+        <Space>
+          <ButtonLink
+            to={`/customers/$customerId`}
+            params={{ customerId: customer.id }}
+            icon={<EyeOutlined />}
+          >
+            View
+          </ButtonLink>
+          <DeleteCustomerButton
+            customer={customer}
+            deleteCustomer={deleteCustomer}
+          />
+        </Space>
       </Col>
     </ListItem>
   );

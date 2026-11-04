@@ -28,14 +28,14 @@ export const CustomerPurchaseListItem = ({
 
   return (
     <ListItem>
-      <Col span={10}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <ShoppingOutlined />
+      <Col xs={24} sm={10}>
+        <Space>
+          <ShoppingOutlined style={{ color: "#1890ff" }} />
           {purchase ? (
             <>
               {`${purchase.bike.brand} ${purchase.bike.model}`}
               {purchase.bike.electric && (
-                <ThunderboltOutlined aria-label="Electric" />
+                <ThunderboltOutlined style={{ color: "#faad14" }} aria-label="Electric" />
               )}
             </>
           ) : (
@@ -43,18 +43,18 @@ export const CustomerPurchaseListItem = ({
           )}
         </Space>
       </Col>
-      <Col span={6}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <CalendarOutlined />
+      <Col xs={24} sm={6}>
+        <Space>
+          <CalendarOutlined style={{ color: "#8c8c8c" }} />
           {purchase ? formatDate(purchase.soldAt) : placeholder}
         </Space>
       </Col>
-      <Col span={4}>
+      <Col xs={24} sm={4}>
         {purchase
           ? `${purchase.quantity} × ${formatPrice(purchase.unitPriceCents)}`
           : placeholder}
       </Col>
-      <Col span={4} style={{ textAlign: "right", fontWeight: "bold" }}>
+      <Col xs={24} sm={4} style={{ textAlign: "right", fontWeight: "bold" }}>
         {purchase
           ? formatPrice(purchase.quantity * purchase.unitPriceCents)
           : placeholder}

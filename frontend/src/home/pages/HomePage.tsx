@@ -1,24 +1,16 @@
 import { ContactsOutlined, ShoppingOutlined } from "@ant-design/icons";
-import { Card, Col, Row, Space } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
+import { Card, Col, Row, Space, Typography } from "antd";
 import { ButtonLink } from "../../shared/components/ButtonLink";
+
+const { Title, Paragraph } = Typography;
 
 export const HomePage = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 16,
-        padding: ".25rem .5rem",
-      }}
-    >
+    <Space direction="vertical" size="large" style={{ display: "flex" }}>
       <div>
         <Title level={2}>Welcome to Bikez.ai</Title>
         <Paragraph>
-          Manage your bike shop's customers and keep track of every bike they
-          bought.
+          Manage your bike shop's customers and keep track of every bike they bought.
         </Paragraph>
       </div>
 
@@ -27,15 +19,14 @@ export const HomePage = () => {
           <Card
             title={
               <Space>
-                <ContactsOutlined />
+                <ContactsOutlined style={{ color: "#1890ff" }} />
                 Customers
               </Space>
             }
             style={{ height: "100%" }}
           >
             <Paragraph>
-              Browse your customers, check their contact details and remove the
-              ones you no longer need.
+              Browse your customers, check their contact details and remove the ones you no longer need.
             </Paragraph>
             <ButtonLink to="/customers" type="primary">
               See customers
@@ -46,19 +37,18 @@ export const HomePage = () => {
           <Card
             title={
               <Space>
-                <ShoppingOutlined />
+                <ShoppingOutlined style={{ color: "#1890ff" }} />
                 Purchases
               </Space>
             }
             style={{ height: "100%" }}
           >
             <Paragraph>
-              Open a customer's page to see the bikes they bought, when, and for
-              how much.
+              Open a customer's page to see the bikes they bought, when, and for how much.
             </Paragraph>
           </Card>
         </Col>
       </Row>
-    </div>
+    </Space>
   );
 };
