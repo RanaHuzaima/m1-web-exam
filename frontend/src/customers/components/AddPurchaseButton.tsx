@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import type { BikeModel } from "../../bikes/models/BikeModel";
+import { API_URL } from "../../shared/api";
 
 interface AddPurchaseButtonProps {
   createPurchase: (input: {
@@ -38,7 +39,7 @@ export const AddPurchaseButton = ({
   const loadBikes = () => {
     setIsLoadingBikes(true);
     axios
-      .get<{ bikes: BikeModel[] }>("http://localhost:3000/bikes", {
+      .get<{ bikes: BikeModel[] }>(`${API_URL}/bikes`, {
         params: { page: 1, limit: 50 },
       })
       .then((result) => setBikes(result.data.bikes))

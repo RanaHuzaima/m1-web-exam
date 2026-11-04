@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../../shared/api";
 import type {
   CustomerModel,
   UpdateCustomerModel,
@@ -15,7 +16,7 @@ export const useCustomerDetailsProvider = (customerId: string) => {
   const load = () => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:3000/customers/${customerId}`)
+      .get(`${API_URL}/customers/${customerId}`)
       .then((result) => setCustomer(result.data))
       .finally(() => {
         setIsLoading(false);
@@ -25,7 +26,7 @@ export const useCustomerDetailsProvider = (customerId: string) => {
   const loadPurchases = () => {
     setIsPurchasesLoading(true);
     axios
-      .get(`http://localhost:3000/customers/${customerId}/bikes`)
+      .get(`${API_URL}/customers/${customerId}/bikes`)
       .then((result) => setPurchases(result.data))
       .finally(() => {
         setIsPurchasesLoading(false);
@@ -35,15 +36,12 @@ export const useCustomerDetailsProvider = (customerId: string) => {
   // Returns the request so the caller can react to errors
   const updateCustomer = (input: UpdateCustomerModel) =>
     axios
-      .patch<CustomerModel>(
-        `http://localhost:3000/customers/${customerId}`,
-        input,
-      )
+      .patch<CustomerModel>(`${API_URL}/customers/${customerId}`, input)
       .then((result) => setCustomer(result.data));
 
   const createPurchase = (input: { bikeId: string; quantity: number }) =>
     axios
-      .post(`http://localhost:3000/customers/${customerId}/bikes`, input)
+      .post(`${API_URL}/customers/${customerId}/bikes`, input)
       .then(() => {
         loadPurchases();
       });

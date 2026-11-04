@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../../shared/api";
 import type {
   CreateCustomerModel,
   CustomerModel,
@@ -20,7 +21,7 @@ export const useCustomersProvider = () => {
   const load = (pageToLoad: number = page) => {
     setIsLoading(true);
     axios
-      .get<CustomersPageResponse>("http://localhost:3000/customers", {
+      .get<CustomersPageResponse>(`${API_URL}/customers`, {
         params: { page: pageToLoad, limit },
       })
       .then((result) => {
@@ -34,19 +35,17 @@ export const useCustomersProvider = () => {
   };
 
   const deleteCustomer = (id: string) => {
-    axios.delete(`http://localhost:3000/customers/${id}`).then(() => {
+    axios.delete(`${API_URL}/customers/${id}`).then(() => {
       load(page);
     });
   };
 
   // Returns the request so the caller can react to errors (e.g. email already in use)
   const createCustomer = (input: CreateCustomerModel) =>
-    axios
-      .post<CustomerModel>("http://localhost:3000/customers", input)
-      .then(() => {
-        // Go back to page 1 so the newly created customer is visible
-        load(1);
-      });
+    axios.post<CustomerModel>(`${API_URL}/customers`, input).then(() => {
+      // Go back to page 1 so the newly created customer is visible
+      load(1);
+    });
 
   return {
     customers,

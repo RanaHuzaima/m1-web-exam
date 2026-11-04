@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_PATH: /data/db.sqlite
+    volumes:
+      - bikez-data:/data
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Browser calls the API on your machine, so use localhost (not the Docker service name)
+        VITE_API_URL: http://localhost:3000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  bikez-data:

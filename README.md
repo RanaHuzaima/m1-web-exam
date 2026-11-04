@@ -143,6 +143,46 @@ m1-web-exam/
 
 ---
 
+## Run with Docker
+
+Needs Docker Desktop (or Docker Engine + Compose).
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+- Frontend: [http://localhost:8080](http://localhost:8080)
+- Backend API: [http://localhost:3000](http://localhost:3000)
+
+SQLite data is stored in a Docker volume (`bikez-data`).  
+The first start seeds the database automatically if it does not exist yet.
+
+Stop:
+
+```bash
+docker compose down
+```
+
+### Deploy on Railway with Docker
+
+1. Create **two** services from the same GitHub repo.
+2. **Backend**
+   - Root Directory: `backend`
+   - Dockerfile path: `backend/Dockerfile`
+   - Add a volume mounted at `/data`
+   - Optional env: `DATABASE_PATH=/data/db.sqlite`
+3. **Frontend**
+   - Root Directory: `frontend`
+   - Dockerfile path: `frontend/Dockerfile`
+   - Build arg / variable: `VITE_API_URL=https://YOUR-BACKEND.up.railway.app`
+4. Redeploy the frontend after the backend public URL is known.
+
+The frontend reads the API base URL from `VITE_API_URL` (defaults to `http://localhost:3000` for local `npm run dev`).
+
+---
+
 ## Notes
 
 - No new npm dependencies were added (exam rule).

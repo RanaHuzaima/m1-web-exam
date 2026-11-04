@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../../shared/api";
 import type { BikeModel, CreateBikeModel } from "../models/BikeModel";
 
 type BikesPageResponse = {
@@ -17,7 +18,7 @@ export const useBikesProvider = () => {
   const load = (pageToLoad: number = page) => {
     setIsLoading(true);
     axios
-      .get<BikesPageResponse>("http://localhost:3000/bikes", {
+      .get<BikesPageResponse>(`${API_URL}/bikes`, {
         params: { page: pageToLoad, limit },
       })
       .then((result) => {
@@ -31,12 +32,12 @@ export const useBikesProvider = () => {
   };
 
   const deleteBike = (id: string) =>
-    axios.delete(`http://localhost:3000/bikes/${id}`).then(() => {
+    axios.delete(`${API_URL}/bikes/${id}`).then(() => {
       load(page);
     });
 
   const createBike = (input: CreateBikeModel) =>
-    axios.post<BikeModel>("http://localhost:3000/bikes", input).then(() => {
+    axios.post<BikeModel>(`${API_URL}/bikes`, input).then(() => {
       // Go back to page 1 so the newly created bike is visible
       load(1);
     });
