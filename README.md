@@ -7,6 +7,8 @@ Built on the provided exam starter. It includes:
 - **Backend** — NestJS REST API + TypeORM + SQLite  
 - **Frontend** — React + TypeScript + Vite + Ant Design + TanStack Router  
 
+**Live demo:** https://m1-web-exam.ranahuzaima.com
+
 ---
 
 ## What was implemented
@@ -164,41 +166,3 @@ Stop:
 ```bash
 docker compose down
 ```
-
-### Deploy on Railway with Docker
-
-Do **not** use Railpack from the empty monorepo root. Use **Dockerfile**.
-
-#### Service 1 — Backend (API)
-
-1. New Project → Deploy from GitHub (this repo).
-2. Service settings:
-   - **Builder:** Dockerfile  
-   - **Dockerfile path:** `Dockerfile` (repo root)  
-   - **Root Directory:** leave empty `/`
-3. Add a **Volume** mounted at `/data`
-4. Env (optional): `DATABASE_PATH=/data/db.sqlite`
-5. Generate a public domain → copy it  
-   Example: `https://bikez-api-production.up.railway.app`
-
-#### Service 2 — Frontend (UI)
-
-1. Same project → **New Service** → same GitHub repo.
-2. Service settings:
-   - **Builder:** Dockerfile  
-   - **Dockerfile path:** `Dockerfile.frontend`
-3. Variables / build args:
-   - `VITE_API_URL=https://YOUR-BACKEND.up.railway.app`  
-     (no trailing slash; use the backend domain from above)
-4. Generate a public domain for the frontend.
-5. Redeploy frontend after setting `VITE_API_URL`.
-
-Local `npm run dev` still uses `http://localhost:3000` by default.
-
----
-
-## Notes
-
-- No new npm dependencies were added (exam rule).
-- Existing customer features were kept working.
-- Local SQLite only — no external database server needed.
