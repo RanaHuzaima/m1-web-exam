@@ -77,8 +77,11 @@ describe("Bike shop API", () => {
     const all = await request(app.getHttpServer())
       .get("/customers")
       .expect(200);
+    expect(all.body).toMatchObject({ totalCount: 4 });
     expect(
-      (all.body as CustomerResponseDto[]).map((item) => item.lastName),
+      (all.body as { customers: CustomerResponseDto[] }).customers.map(
+        (item) => item.lastName,
+      ),
     ).toEqual(["Bernard", "Durand", "Martin", "Moreau"]);
     await request(app.getHttpServer())
       .patch(`/customers/${customer.id}`)
@@ -286,9 +289,54 @@ describe("Bike shop API", () => {
     expect(await database.getRepository(BikeEntity).count()).toBe(4);
   });
 
-  it("exposes no bike catalogue routes or Hello World route", async () => {
-    await request(app.getHttpServer()).get("/bikes").expect(404);
-    await request(app.getHttpServer()).post("/bikes").send({}).expect(404);
+  it("lists, creates, reads, updates and deletes bikes with pagination", async () => {
+    const listed = await request(app.getHttpServer()).get("/bikes").expect(200);
+    expect(listed.body).toMatchObject({ totalCount: 4 });
+    expect((listed.body as { bikes: unknown[] }).bikes).toHaveLength(4);
+
+    const created = await request(app.getHttpServer())
+      .post("/bikes")
+      .send({
+        brand: "TestBrand",
+        model: "TestModel",
+        description: "A test bike",
+        category: "road",
+        frameMaterial: "aluminum",
+        frameSizeCm: 54,
+        wheelSizeInches: 28,
+        gearCount: 18,
+        weightKg: 10.5,
+        electric: false,
+        priceCents: 39900,
+      })
+      .expect(201);
+    const bike = created.body as { id: string; brand: string };
+    expect(bike.brand).toBe("TestBrand");
+    expect(bike.id).toMatch(/^[0-9a-f-]{36}$/);
+
+    await request(app.getHttpServer())
+      .get(`/bikes/${bike.id}`)
+      .expect(200, created.body);
+
+    await request(app.getHttpServer())
+      .patch(`/bikes/${bike.id}`)
+      .send({ priceCents: 45000 })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .delete(`/bikes/${bike.id}`)
+      .expect(204);
+    await request(app.getHttpServer()).get(`/bikes/${bike.id}`).expect(404);
+  });
+
+  it("rejects deleting a bike that has sales and validates pagination", async () => {
+    await request(app.getHttpServer()).delete(`/bikes/${bikeId}`).expect(409);
+    await request(app.getHttpServer())
+      .get("/bikes?page=0&limit=10")
+      .expect(400);
+    await request(app.getHttpServer())
+      .get("/bikes?page=1&limit=51")
+      .expect(400);
     await request(app.getHttpServer()).get("/").expect(404);
   });
 });
