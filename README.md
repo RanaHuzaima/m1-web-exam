@@ -1,33 +1,52 @@
-# Bike shop — Exam codebase
+# Bikez.ai — M1 Web Development Exam
 
-This project provides a starting codebase for a web development exam. It includes
-a bike shop management application with customers, a bike catalog, and sales.
+Bike shop management app for **Bikez.ai**: customers, bicycle catalog, and purchases.
 
-It consists of two parts:
+Built on the provided exam starter. It includes:
 
-- `backend`: a REST API built with NestJS and TypeORM, using a local SQLite database.
-- `frontend`: a user interface built with React, TypeScript, and Vite.
+- **Backend** — NestJS REST API + TypeORM + SQLite  
+- **Frontend** — React + TypeScript + Vite + Ant Design + TanStack Router  
+
+---
+
+## What was implemented
+
+### Exercise 1 — Customer pagination
+
+- `GET /customers?page=&limit=` returns `{ totalCount, customers }`
+- Defaults: `page=1`, `limit=10` (max limit: 50)
+- Invalid params → `400`
+- Customers page supports page navigation
+- Newest customers appear first
+
+### Exercise 2 — Bicycle catalog
+
+- Full bikes CRUD API with the same pagination rules (`{ totalCount, bikes }`)
+- Missing bike → `404`
+- Delete bike that has sales → `409`
+- Frontend: list, details, create, update, delete (+ confirmation)
+- Accessible from the main navigation
+- Newest bikes appear first
+
+### Extra (existing API + UI)
+
+- Record a purchase from a customer page (`Add purchase`)
+- Dark mode UI
+
+---
 
 ## Prerequisites
 
-- Git.
-- Node.js 24.15 or a newer version in the 24.x release line, with npm.
+- Git
+- Node.js **24.15+** (24.x) with npm
 
-## Clone the project
+---
 
-In a terminal:
+## How to run
 
-```bash
-git clone https://github.com/Iberos/m1-web-exam.git
-cd m1-web-exam
-```
+Use **two terminals**.
 
-Then run the backend and frontend in **two separate terminals**.
-
-## Backend
-
-From the project root, install the dependencies, seed the database,
-and start the API:
+### 1. Backend
 
 ```bash
 cd backend
@@ -36,19 +55,19 @@ npm run seed
 npm run start:dev
 ```
 
-The API is available at [http://localhost:3000](http://localhost:3000).
-The customer list is available at [http://localhost:3000/customers](http://localhost:3000/customers).
+API: [http://localhost:3000](http://localhost:3000)
 
-The `npm run seed` command builds the backend, creates the `backend/db.sqlite`
-database, and adds sample customers, bikes, and sales. No external database
-server is required. Each additional run adds another batch of data.
+`npm run seed` builds the app, creates `backend/db.sqlite`, and inserts sample customers, bikes, and sales.  
+Running seed again adds another batch of data.
 
-For subsequent starts, simply run `npm run start:dev` from the `backend`
-directory. Keep this terminal open while using the application.
+Later starts:
 
-## Frontend
+```bash
+cd backend
+npm run start:dev
+```
 
-In a second terminal, from the project root:
+### 2. Frontend
 
 ```bash
 cd frontend
@@ -56,10 +75,76 @@ npm install
 npm run dev
 ```
 
-The interface is available at [http://localhost:5173](http://localhost:5173)
-by default. If this port is already in use, open the URL shown by Vite in the terminal.
-The backend must remain running on port `3000` so the interface can access the data.
+UI: [http://localhost:5173](http://localhost:5173)  
+(If that port is taken, use the URL shown by Vite.)
 
-For subsequent starts, simply run `npm run dev` from the `frontend` directory.
+The backend must stay running on port `3000`.
 
-To stop the applications, press `Ctrl+C` in each terminal.
+Stop either app with `Ctrl+C`.
+
+---
+
+## Main API routes
+
+### Customers
+
+| Method | Route | Description |
+|--------|--------|-------------|
+| GET | `/customers?page=&limit=` | Paginated customer list |
+| POST | `/customers` | Create customer |
+| GET | `/customers/:id` | Customer details |
+| PATCH | `/customers/:id` | Update customer |
+| DELETE | `/customers/:id` | Delete customer (+ their sales) |
+| GET | `/customers/:id/bikes` | Customer purchases |
+| POST | `/customers/:id/bikes` | Record a sale (`bikeId`, `quantity`) |
+
+### Bikes
+
+| Method | Route | Description |
+|--------|--------|-------------|
+| GET | `/bikes?page=&limit=` | Paginated bike catalog |
+| POST | `/bikes` | Create bike |
+| GET | `/bikes/:id` | Bike details |
+| PATCH | `/bikes/:id` | Update bike |
+| DELETE | `/bikes/:id` | Delete bike (409 if linked to a sale) |
+
+---
+
+## Frontend pages
+
+| Path | Features |
+|------|----------|
+| `/` | Home |
+| `/customers` | List, pagination, create, delete |
+| `/customers/:customerId` | Edit info, purchases, add purchase |
+| `/bikes` | Catalog list, pagination, create, delete |
+| `/bikes/:bikeId` | Bike details and edit |
+
+---
+
+## Project structure
+
+```
+m1-web-exam/
+├── backend/          # NestJS API
+│   └── src/
+│       ├── customers/
+│       ├── bikes/
+│       ├── common/   # shared pagination DTO
+│       └── database/
+└── frontend/         # React app
+    └── src/
+        ├── customers/
+        ├── bikes/
+        ├── home/
+        ├── routes/
+        └── shared/
+```
+
+---
+
+## Notes
+
+- No new npm dependencies were added (exam rule).
+- Existing customer features were kept working.
+- Local SQLite only — no external database server needed.
