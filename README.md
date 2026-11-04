@@ -167,19 +167,33 @@ docker compose down
 
 ### Deploy on Railway with Docker
 
-1. Create **two** services from the same GitHub repo.
-2. **Backend**
-   - Root Directory: `backend`
-   - Dockerfile path: `backend/Dockerfile`
-   - Add a volume mounted at `/data`
-   - Optional env: `DATABASE_PATH=/data/db.sqlite`
-3. **Frontend**
-   - Root Directory: `frontend`
-   - Dockerfile path: `frontend/Dockerfile`
-   - Build arg / variable: `VITE_API_URL=https://YOUR-BACKEND.up.railway.app`
-4. Redeploy the frontend after the backend public URL is known.
+Do **not** use Railpack from the empty monorepo root. Use **Dockerfile**.
 
-The frontend reads the API base URL from `VITE_API_URL` (defaults to `http://localhost:3000` for local `npm run dev`).
+#### Service 1 — Backend (API)
+
+1. New Project → Deploy from GitHub (this repo).
+2. Service settings:
+   - **Builder:** Dockerfile  
+   - **Dockerfile path:** `Dockerfile` (repo root)  
+   - **Root Directory:** leave empty `/`
+3. Add a **Volume** mounted at `/data`
+4. Env (optional): `DATABASE_PATH=/data/db.sqlite`
+5. Generate a public domain → copy it  
+   Example: `https://bikez-api-production.up.railway.app`
+
+#### Service 2 — Frontend (UI)
+
+1. Same project → **New Service** → same GitHub repo.
+2. Service settings:
+   - **Builder:** Dockerfile  
+   - **Dockerfile path:** `Dockerfile.frontend`
+3. Variables / build args:
+   - `VITE_API_URL=https://YOUR-BACKEND.up.railway.app`  
+     (no trailing slash; use the backend domain from above)
+4. Generate a public domain for the frontend.
+5. Redeploy frontend after setting `VITE_API_URL`.
+
+Local `npm run dev` still uses `http://localhost:3000` by default.
 
 ---
 
